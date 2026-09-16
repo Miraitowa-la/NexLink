@@ -76,7 +76,7 @@ NexLink 的固件提供三个入口文件，分别服务于不同部署方式：
 
 ## 按键与配对
 
-当前硬件约定：按键使用 GPIO18，低电平表示按下；LED 使用 GPIO1，低电平表示点亮。
+当前硬件约定：按键使用 GPIO38，低电平表示按下；LED 使用 GPIO48，高电平表示点亮。
 
 - 短按：切换 RX 的有线/无线模式，或切换 TX 的关闭/开启模式。
 - 长按约 2 秒：进入配对流程。
@@ -133,21 +133,27 @@ ESP32-S3 的两个 CPU 核按实时性划分职责：
 
 ## 硬件连接概要
 
+以下 GPIO 分配用于适配项目配套的 NexLink ESP32-S3 开发板，因此替换了初版基于通用开发板的引脚配置。
+
 当前 RX / DIRECT 的默认目标接口引脚如下：
 
 | 功能 | ESP32-S3 GPIO |
 |---|---:|
-| JTAG TDI | GPIO3 |
-| JTAG TDO | GPIO9 |
-| TCK / SWCLK | GPIO10 |
-| TMS / SWDIO | GPIO8 |
-| nRESET / NRST | GPIO11 |
-| 目标 UART TX | GPIO14 |
-| 目标 UART RX | GPIO13 |
-| 按键 | GPIO18 |
-| LED | GPIO1 |
+| JTAG TDI | GPIO10 |
+| JTAG TDO / SWO | GPIO12 |
+| TCK / SWCLK | GPIO17 |
+| TMS / SWDIO | GPIO18 |
+| nRESET / NRST | GPIO13 |
+| 目标 UART TX | GPIO47 |
+| 目标 UART RX | GPIO45 |
+| 按键 | GPIO38 |
+| LED | GPIO48 |
 
 目标板必须与 NexLink 共地。当前调试 GPIO 使用 3.3 V 逻辑电平，连接前应确认目标板电平兼容性。
+
+GPIO45 是 ESP32-S3 的 strapping 引脚，参与 VDD_SPI（片内 Flash/PSRAM 供电）电压选择：芯片复位释放时若采样为高，VDD_SPI 输出 1.8 V；采样为低则输出 3.3 V。该引脚复位默认带内部弱下拉，因此无外部干预时采样为低、VDD_SPI 为 3.3 V。用作目标 UART RX 时，请勿在该网络上加外部上拉，否则可能把 VDD_SPI 切到 1.8 V。若模块已通过 `EFUSE_VDD_SPI_FORCE` 固定 VDD_SPI 电压（常见于片内 Flash 模组），则该 strapping 不再影响电压。复位释放后 GPIO45 作为普通 GPIO 使用。
+
+GPIO47 复位时电平下降较慢，复位期间可能出现约 60 μs 的低电平毛刺，用作 UART TX 时应在目标端确认不会误触发。
 
 ## 构建环境
 

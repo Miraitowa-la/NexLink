@@ -25,18 +25,18 @@ static const usb_device_config_t usb_device_config = {
  * 硬件连接填写。目标板必须与 ESP32-S3 共地，且调试信号电平不得超过 3.3 V。
  */
 static const debug_gpio_config_t debug_gpio_config = {
-    .tdi = GPIO_NUM_3,
-    .tdo = GPIO_NUM_9,
-    .tck = GPIO_NUM_10,
-    .tms = GPIO_NUM_8,
-    .nrst = GPIO_NUM_11,
+    .tdi = GPIO_NUM_10,
+    .tdo = GPIO_NUM_12,
+    .tck = GPIO_NUM_17,
+    .tms = GPIO_NUM_18,
+    .nrst = GPIO_NUM_13,
 };
 
 static const bridge_target_config_t cdc_target_config = {
     .uart = {
         .port = UART_NUM_1,
-        .tx_pin = GPIO_NUM_14,
-        .rx_pin = GPIO_NUM_13,
+        .tx_pin = GPIO_NUM_47,
+        .rx_pin = GPIO_NUM_45,
         .baud_rate = 115200,
     },
 };

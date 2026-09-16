@@ -6,6 +6,15 @@
 - 次版本：增加兼容的新功能时更新。
 - 修订版本：修复问题、优化或文档更新时更新。
 
+## [Unreleased]
+
+### 硬件引脚调整
+
+- 重新分配 RX / DIRECT 的调试与串口引脚：JTAG TDI = GPIO10，JTAG TDO / SWO = GPIO12，TCK / SWCLK = GPIO17，TMS / SWDIO = GPIO18，nRESET = GPIO13，目标 UART TX = GPIO47，目标 UART RX = GPIO45。
+- 按键改到 GPIO38，LED 改到 GPIO48。
+- LED 改为高电平点亮；按键保持低电平表示按下。
+- 目标 UART RX 使用 strapping 引脚 GPIO45（参与 VDD_SPI 电压选择），该网络不得加外部上拉；GPIO47 复位期间存在约 60 μs 低电平毛刺。
+
 ## [0.1.0] - 2026-09-03
 
 ### 首个基础可用版本

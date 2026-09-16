@@ -3,9 +3,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-/* Board LED is connected active-low: GPIO low turns it on. */
-#define LED_ON_LEVEL 0
-#define LED_OFF_LEVEL 1
+/* Board LED is connected active-high: GPIO high turns it on. */
+#define LED_ON_LEVEL 1
+#define LED_OFF_LEVEL 0
 
 static volatile led_state_t s_state = LED_STATE_OFF;
 static bool s_initialized;

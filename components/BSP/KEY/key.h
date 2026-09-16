@@ -3,7 +3,7 @@
 #include "driver/gpio.h"
 #include "esp_err.h"
 
-#define KEY_GPIO_PIN GPIO_NUM_18
+#define KEY_GPIO_PIN GPIO_NUM_38
 
 typedef void (*key_click_callback_t)(void *context);
 typedef void (*key_hold_callback_t)(void *context);

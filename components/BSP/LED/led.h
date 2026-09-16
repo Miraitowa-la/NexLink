@@ -3,7 +3,7 @@
 #include "driver/gpio.h"
 #include "esp_err.h"
 
-#define LED_GPIO_PIN GPIO_NUM_1
+#define LED_GPIO_PIN GPIO_NUM_48
 
 typedef enum {
     LED_STATE_OFF = 0,
