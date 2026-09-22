@@ -134,6 +134,7 @@ ESP32-S3 的两个 CPU 核按实时性划分职责：
 ## 硬件连接概要
 
 以下 GPIO 分配用于适配项目配套的 NexLink ESP32-S3 开发板，因此替换了初版基于通用开发板的引脚配置。
+开发板的原理图、PCB 等硬件资料见[立创开源硬件项目](https://oshwhub.com/miraitowa-la/project_iatvaxyy)。
 
 当前 RX / DIRECT 的默认目标接口引脚如下：
 
