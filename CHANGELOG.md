@@ -8,6 +8,13 @@
 
 ## [Unreleased]
 
+### CDC 活动指示灯
+
+- 新增 GPIO9 的 CDC RX 指示灯和 GPIO46 的 CDC TX 指示灯，均按高电平点亮设计。
+- RX 指示灯仅在目标板到主机方向的 CDC 数据成功进入下一层时点亮；TX 指示灯仅在主机到目标板方向的 CDC 数据成功进入下一层时点亮。
+- 两盏活动灯每次数据活动保持约 75 ms；连续 CDC 数据会延长亮灯时间。
+- CMSIS-DAP、ESP-NOW 心跳、配对报文、CDC 参数设置和流控报文不会触发 CDC 活动指示灯。
+
 ### 硬件引脚调整
 
 - 重新分配 RX / DIRECT 的调试与串口引脚：JTAG TDI = GPIO10，JTAG TDO / SWO = GPIO12，TCK / SWCLK = GPIO17，TMS / SWDIO = GPIO18，nRESET = GPIO13，目标 UART TX = GPIO47，目标 UART RX = GPIO45。

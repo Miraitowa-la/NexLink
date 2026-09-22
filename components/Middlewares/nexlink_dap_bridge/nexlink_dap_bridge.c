@@ -6,6 +6,7 @@
 #include "freertos/task.h"
 #include "debug_probe.h"
 #include "bridge_target.h"
+#include "led.h"
 #include "nexlink_dap_bridge.h"
 #include "nexlink_link.h"
 #include "nexlink_protocol.h"
@@ -43,7 +44,15 @@ static esp_err_t send_frame(const nexlink_protocol_frame_t *frame)
 {
     uint8_t data[228]; size_t length = sizeof(data);
     ESP_RETURN_ON_ERROR(nexlink_protocol_encode(frame, data, &length), "nexlink_dap", "encode failed");
-    return nexlink_link_send_payload(data, length);
+    const esp_err_t result = nexlink_link_send_payload(data, length);
+    if (result == ESP_OK) {
+        if (frame->type == NEXLINK_PROTOCOL_MSG_CDC_DATA_TX) {
+            led_cdc_tx_activity();
+        } else if (frame->type == NEXLINK_PROTOCOL_MSG_CDC_DATA_RX) {
+            led_cdc_rx_activity();
+        }
+    }
+    return result;
 }
 
 static void tx_task(void *context)
@@ -88,7 +97,9 @@ static void process_cdc(const nexlink_protocol_frame_t *request)
 {
     if (!s_cdc_target) return;
     if (request->type == NEXLINK_PROTOCOL_MSG_CDC_DATA_TX) {
-        (void)bridge_target_write(s_cdc_target, request->payload, request->length);
+        if (bridge_target_write(s_cdc_target, request->payload, request->length) == ESP_OK) {
+            led_cdc_tx_activity();
+        }
         grant_cdc_credit();
     } else if (request->type == NEXLINK_PROTOCOL_MSG_CDC_LINE_CODING && request->length == 7) {
         const uint32_t baud = (uint32_t)request->payload[0] | ((uint32_t)request->payload[1] << 8) |
